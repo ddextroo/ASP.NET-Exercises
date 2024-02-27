@@ -1,0 +1,101 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+    <div class="container">
+        <div class="content mt-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                        <h3>Customer Bill</h3>
+                                <span>
+                                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#DataModal" id="btnClick">Calculate</button>
+                                </span>
+                            
+                    </div>
+                    </div>
+                    <table id="CustomerTable" class="table table-borderless table-hover">
+                        <thead class="table-danger">
+                            <tr>
+                                <th scope="col">QTY</th>
+                                <th scope="col">DESCRIPTION</th>
+                                <th scope="col">UNIT PRICE</th>
+                                <th scope="col">TOTAL PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                                    <tr>
+
+                                    </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    <div class="row" id="result">
+                        <div class="col">
+                    <p class="fw-bold">SUBTOTAL: &emsp;<span class="fw-normal" id="subtotal"></span></p>
+                    <p class="fw-bold">TAX: &emsp;<span class="fw-normal" id="tax"></span></p>
+                    <p class="fw-bold">TOTAL: &emsp;<span class="fw-normal" id="total"></span></p>
+                        </div>
+                    
+            </div>
+                    </div>
+    </div>
+</div>
+<div id="DataModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="tv" class="col-form-label">How many TV'S were sold?</label>
+                        <input type="number" class="form-control" name="product"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="vcr" class="col-form-label">How many VCR'S were sold?</label>
+                        <input type="number" class="form-control" name="product" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="remote controller" class="col-form-label">How many remote controllers were sold?</label>
+                        <input type="number" class="form-control" name="product" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd" class="col-form-label">How many CD'S were sold?</label>
+                        <input type="number" class="form-control" name="product" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="tape recorders" class="col-form-label">How many tape recorders were sold?</label>
+                        <input type="number" class="form-control" name="product" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Calculate</button>
+            </div>
+        </div>
+    </div>
+
+</div>
