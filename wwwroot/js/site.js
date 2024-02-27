@@ -24,9 +24,7 @@ $().ready(function () {
 
     $('#CustomerTable').find("tbody").append($("<tr><tr><tr><tr><tr>"))
     $('#DataModal .modal-footer button:nth-child(2)').click(function () {
-        $('#result').show()
         $('#CustomerTable > tbody > tr > td').remove()
-
         setTimeout(function () {
         let quantities = $('#DataModal form').find("input[name='product']").map(function () { return $(this).val() }).get()
         $('#CustomerTable > tbody > tr').each(function (i, tr) {
@@ -36,6 +34,7 @@ $().ready(function () {
             $(this).append($('<td>').text(parseFloat(customerModel.prices[i]).toFixed(2)))
             $(this).append($('<td>').text(parseFloat(quantities[i] * customerModel.prices[i]).toFixed(2)))
         })
+        $('#result').show()
         $("#subtotal").text(parseFloat(subtotal).toFixed(2))
         $("#tax").text(parseFloat(subtotal * 0.0825).toFixed(2))
         $("#total").text(parseFloat(subtotal + (subtotal * 0.0825)).toFixed(2))
