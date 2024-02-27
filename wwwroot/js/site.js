@@ -21,6 +21,8 @@ $().ready(function () {
             150.00
         ]
     }
+
+    $('#CustomerTable').find("tbody").append($("<tr><tr><tr><tr><tr>"))
     $('#DataModal .modal-footer button:nth-child(2)').click(function () {
         $('#result').show()
         $('#CustomerTable > tbody > tr > td').remove()
