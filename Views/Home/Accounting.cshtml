@@ -1,27 +1,30 @@
-﻿
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewBag.Title = "Accounting";
+    ViewData["Title"] = "Accounting Page";
 }
-
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script src="~/Scripts/myScript/script.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <div class="container">
-    <div class="row">
-        <div class="col-md-5">
+    <div class="row d-flex justify-content-between">
+        <div class="col">
             <h2>Student's Accounting System</h2>
         </div>
-        <div class="col-md-5">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DataModal" id="btnClick">Add student</button>
+        <div class="col-md-5 d-flex align-items-end flex-column">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DataModal" id="btnClick">Add student</button>
         </div>
     </div>
     <table id="CustomerTable" class="table table-borderless table-hover">
         <thead class="table-danger">
             <tr>
-                <th scope="col">CODE</th>
-                <th scope="col">COURSE</th>
-                <th scope="col">REGISTRATION</th>
-                <th scope="col">MISC</th>
-                <th scope="col">LAB FEE</th>
+                <th scope="col">ID Number</th>
+                <th scope="col">Total tuition</th>
+                <th scope="col">Prelim Fee</th>
+                <th scope="col">Midterm Fee</th>
+                <th scope="col">Semifinal Fee   </th>
+                <th scope="col">Total Fees</th>
+                <th scope="col">Mode of Payment</th>
             </tr>
         </thead>
         <tbody>
@@ -31,30 +34,30 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title">Add new student</h1>
+                    <h3 class="modal-title">Add new student</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <form>
-                            <div class="row">
+                        <form id="student">
+                            <div class="row d-flex justify-content-center">
                                 <div class="col-md-5 mb-3">
                                     <label for="tv" class="col-form-label">ID Number</label>
-                                    <input type="number" class="form-control" name="user" />
+                                    <input type="number" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="vcr" class="col-form-label">Last Name</label>
-                                    <input type="text" class="form-control" name="user" />
+                                    <input type="text" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="remote controller" class="col-form-label">First Name</label>
-                                    <input type="text" class="form-control" name="user" />
+                                    <input type="text" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="remote controller" class="col-form-label">Gender</label>
-                                    <select id="sel_gender" class="form-control">
+                                    <select id="sel_gender" class="form-control" required>
                                         <option selected disabled>Select Gender</option>
                                         <option value="0">Male</option>
                                         <option value="1">Female</option>
@@ -63,7 +66,7 @@
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="tape recorders" class="col-form-label">Course Code</label>
-                                    <select id="sel_ccode" class="form-control">
+                                    <select id="sel_ccode" class="form-control" required>
                                         <option selected disabled>Select Course code</option>
                                         <option value="0">0001</option>
                                         <option value="1">0002</option>
@@ -77,11 +80,11 @@
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="remote controller" class="col-form-label">Course</label>
-                                    <input type="text" class="form-control" name="user" id="course" disabled/>
+                                    <input type="text" class="form-control" name="user" id="course" disabled required />
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="tape recorders" class="col-form-label">Year</label>
-                                    <select id="sel_year" class="form-control">
+                                    <select id="sel_year" class="form-control" required>
                                         <option selected disabled>Year Level</option>
                                         <option value="0">1</option>
                                         <option value="1">2</option>
@@ -91,19 +94,18 @@
                                 </div>
                                 <div class="col-md-5 mb-3">
                                     <label for="tape recorders" class="col-form-label">Subjects</label>
-                                    <input type="number" class="form-control" name="user" />
+                                    <input type="number" class="form-control" name="user" required />
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Calculate</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Calculate</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
+<script src="~/js/site.js"></script>
