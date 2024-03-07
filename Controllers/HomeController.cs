@@ -35,30 +35,32 @@ namespace MyExercises.Controllers
         public ActionResult StudentEntry()
         {
             var data = new List<object>();
-            var tuition_units = float.Parse(Request["subject"]) * 3;
-            var total_fee = float.Parse(tuition_units + Request["labfee"] + Request["registration"] + Request["tuition"] + Request["misc"]);
+            var total_units = float.Parse(Request.Form["subject"]) * 3;
+            var tuition_tuition = float.Parse(Request.Form["tuition"]) * total_units;
+            var total_f = float.Parse(Request.Form["labfee"]) + float.Parse(Request.Form["registration"]) + float.Parse(Request.Form["tuition"]) + float.Parse(Request.Form["misc"]) + tuition_tuition;
             data.Add(new
             {
-                idnum = Request["fname"],
-                lname = Request["lname"],
-                fname = Request["fname"],
-                gender = Request["gender"],
-                course_code = Request["course_code"],
-                course = Request["course"],
-                year = Request["year"],
-                subject = Request["subject"],
-                registration = Request["registration"],
-                tuition = Request["tuition"],
-                labfee = Request["labfee"],
-                misc = Request["misc"],
-                tuition_unit = tuition_units,
-                total_fee = total_fee,
-                prelim = 0,
-                midterm = 0,
-                semifinal = 0,
-                final = total_fee
+                idnum = Request.Form["idnum"].ToString(),
+                lname = Request.Form["lname"].ToString(),
+                fname = Request.Form["fname"].ToString(),
+                gender = Request.Form["gender"].ToString(),
+                course_code = Request.Form["course_code"].ToString(),
+                course = Request.Form["course"].ToString(),
+                year = Request.Form["year"].ToString(),
+                subject = Request.Form["subject"].ToString(),
+                registration = Request.Form["registration"].ToString(),
+                tuition = Request.Form["tuition"].ToString(),
+                labfee = Request.Form["labfee"].ToString(),
+                misc = Request.Form["misc"].ToString(),
+                total_tuition_units = tuition_tuition,
+                total_fee = total_f,
+                prelim = total_f * 0.53,
+                midterm = total_f * 0.64,
+                semifinal = total_f * 0.75,
+                final = total_f,
+                mode_of_payment = (total_f >= 8000) ? "Cash" : (total_f >= 5000) ? "Check" : "Credit"
             });
-            return Json(data, JsonRequestBehavior.AllowGet);
+            return Json(data);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

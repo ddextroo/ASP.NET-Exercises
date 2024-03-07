@@ -1,5 +1,10 @@
-﻿
-$().ready(function () {
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// for details on configuring this project to bundle and minify static web assets.
+
+// Write your JavaScript code.
+
+$(document).ready(function () {
+
     var studentModel = {
         course: [
             "C1",
@@ -52,12 +57,7 @@ $().ready(function () {
             2036.90,
         ]
     }
-    var selectedCode
-    var selectedId
-    var selectedGender
-    var selectedYear
-
-    $('#CustomerTable').find("tbody").append($("<tr><tr><tr><tr><tr>"))
+    var selectedCode, selectedId, selectedGender, selectedYear, res
 
     $('#sel_ccode').on('change', function (e) {
         selectedCode = $(this).find(':selected').val();
@@ -70,11 +70,14 @@ $().ready(function () {
     $('#sel_year').on('change', function (e) {
         selectedYear = $(this).find(':selected').text();
     })
-    $('#DataModal .modal-footer button:nth-child(2)').click(function () {
+    $('#DataModal .modal-footer button:nth-child(2)').off('click').on('click', function () {
         let user = $('#DataModal form').find("input[name='user']").map(function () { return $(this).val() }).get()
 
-        $.post("../Home/StudentEntry",
-            {
+
+        $.ajax({
+            url: "/Home/StudentEntry",
+            type: 'POST',
+            data: {
                 idnum: user[0],
                 lname: user[1],
                 fname: user[2],
@@ -87,20 +90,35 @@ $().ready(function () {
                 tuition: studentModel.tuition[selectedCode],
                 labfee: studentModel.labfee[selectedCode],
                 misc: studentModel.misc[selectedCode],
+            },
+            success: function (response) {
+                res = response
 
             },
-            function (data, status) {
-                alert("Data: " + data.idnum + "\nStatus: " + status);
-            });
+            error: function (error) {
+                console.log(error)
+            },
+            complete: function () {
+                $("#student").trigger('reset');
+
+                setTimeout(function () {
+                    $('#CustomerTable > tbody > tr > td').remove()
+                    $('#CustomerTable > tbody').each(function (i, tr) {
+                        $(this).append($("<tr>"))
+                        $(this).append($('<td>').text(res[0].idnum));
+                        $(this).append($('<td>').text(parseFloat(res[0].total_tuition_units.toFixed(2))));
+                        $(this).append($('<td>').text(parseFloat(res[0].prelim.toFixed(2))));
+                        $(this).append($('<td>').text(parseFloat(res[0].midterm.toFixed(2))));
+                        $(this).append($('<td>').text(parseFloat(res[0].semifinal.toFixed(2))));
+                        $(this).append($('<td>').text(parseFloat(res[0].total_fee.toFixed(2))));
+                        $(this).append($('<td>').text(res[0].mode_of_payment));
+                    });
+                }, 500)
+
+            }
+
+        })
+
     })
 
-
-
-    /*
-    $('#DataModal .modal-footer button:nth-child(2)').click(function () {
-        $('#CustomerTable > tbody > tr > td').remove()
-
-        let quantities = $('#DataModal form').find("input[name='product']").map(function () { return $(this).val() }).get()
-    }
-        */
 })
