@@ -13,9 +13,10 @@
         </div>
         <div class="col-md-5 d-flex align-items-end flex-column">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DataModal" id="btnClick">Add student</button>
+            <button type="button" class="btn btn-primary" id="btnClick2">Get</button>
         </div>
     </div>
-    <table id="CustomerTable" class="table table-borderless table-hover">
+    <table id="CustomerTable" class="table table-borderless table-stipped table-hover" data-url="/Home/StudentEntry" data-side-pagination="client" data-toggle="table" data-pagination="true" data-show-toggle="true" data-show-columns="true">
         <thead class="table-danger">
             <tr>
                 <th scope="col">ID Number</th>
@@ -24,7 +25,9 @@
                 <th scope="col">Midterm Fee</th>
                 <th scope="col">Semifinal Fee   </th>
                 <th scope="col">Total Fees</th>
+                <th scope="col">Status</th>
                 <th scope="col">Mode of Payment</th>
+                <th score="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -103,6 +106,56 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Calculate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--
+        Modal for payment
+    -->
+    <div id="DataModal2" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Student Payment</h3>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="pay">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-5 mb-3">
+                                    <label for="remote controller" class="col-form-label">Select Assessment</label>
+                                    <select id="sel_assessment" class="form-control" required>
+                                        <option selected disabled>Assessment</option>
+                                        <option value="0">Prelim</option>
+                                        <option value="1">Midterm</option>
+                                        <option value="2">Semifinal</option>
+                                        <option value="2">Final</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="total_amount" class="col-form-label">Total amount</label>
+                                    <input type="text" class="form-control" name="user" id="total_amount" disabled required />
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col mb-3">
+                                    <label for="amount_tendered" class="col-form-label">Amount Tendered</label>
+                                    <input type="text" class="form-control" name="user" id="amount_tendered" required />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>
