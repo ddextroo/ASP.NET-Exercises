@@ -4,7 +4,6 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
-
     var studentModel = {
         course: [
             "C1",
@@ -57,6 +56,10 @@ $(document).ready(function () {
             2036.90,
         ]
     }
+    function payButtonFormatter(el, row) {
+        return `<button type='button' class='btn btn-success'><i class='fa fa-edit'></i> Edit</button>&nbsp`;
+    }
+    
     var selectedCode, selectedId, selectedGender, selectedYear, res
 
     $('#sel_ccode').on('change', function (e) {
@@ -70,9 +73,21 @@ $(document).ready(function () {
     $('#sel_year').on('change', function (e) {
         selectedYear = $(this).find(':selected').text();
     })
+
+    $("#btnClick2").click(function () {
+        $.get("/Home/StudentEntry?idnum=1234")
+            .done(function (response) {
+                // Handle the response from the server
+                console.log("GET response:", response);
+            })
+            .fail(function (xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
+            });
+    })
+    
     $('#DataModal .modal-footer button:nth-child(2)').off('click').on('click', function () {
         let user = $('#DataModal form').find("input[name='user']").map(function () { return $(this).val() }).get()
-
 
         $.ajax({
             url: "/Home/StudentEntry",
@@ -90,6 +105,8 @@ $(document).ready(function () {
                 tuition: studentModel.tuition[selectedCode],
                 labfee: studentModel.labfee[selectedCode],
                 misc: studentModel.misc[selectedCode],
+                status: "Pending",
+                amount_tendered: 0,
             },
             success: function (response) {
                 res = response
@@ -102,6 +119,7 @@ $(document).ready(function () {
                 $("#student").trigger('reset');
 
                 setTimeout(function () {
+
                     $('#CustomerTable > tbody > tr > td').remove()
                     $('#CustomerTable > tbody').each(function (i, tr) {
                         $(this).append($("<tr>"))
@@ -111,14 +129,38 @@ $(document).ready(function () {
                         $(this).append($('<td>').text(parseFloat(res[0].midterm.toFixed(2))));
                         $(this).append($('<td>').text(parseFloat(res[0].semifinal.toFixed(2))));
                         $(this).append($('<td>').text(parseFloat(res[0].total_fee.toFixed(2))));
+                        $(this).append($('<td>').html(res[0].status));
                         $(this).append($('<td>').text(res[0].mode_of_payment));
+                        $(this).append($('<td>').html(`<button type='button' class='btn btn-outline-success btn-sm btn-pay' data-bs-toggle="modal" data-bs-target="#DataModal2">Edit</button>`));
                     });
                 }, 500)
 
             }
 
         })
+        $('#DataModal2 .modal-footer button:nth-child(2)').off('click').on('click', function () {
+            console.log($('#DataModal2 form #amount_tendered').val())
 
+            $.ajax({
+                url: '/Home/StudentEntry/1234', 
+                type: 'PUT',
+                data: {
+                    amount_tendered: $('#DataModal2 form #amount_tendered').val(),
+                    status: "Paid"
+                },
+                success: function (response) {
+                    res = response
+                    console.log(res)
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+            })
+        })
+        //$("table").on("click", ".btn-pay", function () {
+        //    console.log("wqeqwqw")
+        //});
+        //var num3 = 123456 / Math.pow(10, 3);  //sets num3 to 123.456
     })
 
 })
