@@ -1,8 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+﻿
 $(document).ready(function () {
     var studentModel = {
         course: [
@@ -56,9 +56,6 @@ $(document).ready(function () {
             2036.90,
         ]
     }
-    function payButtonFormatter(el, row) {
-        return `<button type='button' class='btn btn-success'><i class='fa fa-edit'></i> Edit</button>&nbsp`;
-    }
     
     var selectedCode, selectedId, selectedGender, selectedYear, res
 
@@ -73,24 +70,97 @@ $(document).ready(function () {
     $('#sel_year').on('change', function (e) {
         selectedYear = $(this).find(':selected').text();
     })
+    retrieve()
 
-    $("#btnClick2").click(function () {
-        $.get("/Home/StudentEntry?idnum=1234")
-            .done(function (response) {
-                // Handle the response from the server
-                console.log("GET response:", response);
-            })
-            .fail(function (xhr, status, error) {
-                // Handle errors
-                console.error(xhr.responseText);
+    function retrieve() {
+        $('#CustomerTable > tbody > tr > td').off();
+
+        $.ajax({
+            url: "/Home/GetAllStudentEntries",
+            type: "GET",
+            success: function (response) {
+                if (response && response.length > 0) {
+                    var tbody = $('#CustomerTable > tbody');
+                    tbody.empty();
+                    $.each(response, function (i, res) {
+                        var row = $("<tr>");
+                        row.append($('<td>').text(res.idnum));
+                        row.append($('<td>').text(parseFloat(res.total_tuition_units.toFixed(2))));
+                        row.append($('<td>').text(parseFloat(res.prelim.toFixed(2))));
+                        row.append($('<td>').text(parseFloat(res.midterm.toFixed(2))));
+                        row.append($('<td>').text(parseFloat(res.semifinal.toFixed(2))));
+                        row.append($('<td>').text(parseFloat(res.total_fee.toFixed(2))));
+                        row.append($('<td>').text(res.mode_of_payment));
+                        row.append($('<td>').text(res.amount_tendered));
+                        row.append($('<td>').text(parseFloat(res.change).toFixed(2)));
+                        var editButton = $('<button type="button" class="btn btn-success btn-sm btn-pay" data-bs-toggle="modal" data-bs-target="#DataModal2">Edit</button>');
+                        editButton.data("idNum", res.idnum)
+                        row.append($("<td>").html(editButton))
+                        tbody.append(row);
+                    });
+                } else {
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+    $("#DataModal2").on('shown.bs.modal', function (e) {
+        const idnum = $(e.relatedTarget).data("idNum")
+        var asssessment = [
+            "prelim",
+            "midterm",
+            "semifinal",
+            "final"
+        ]
+        let res, a, assessment_value
+        $('#sel_assessment').on('change', function (e) {
+            selectedAssessment = $(this).find(':selected').val();
+            $.ajax({
+                url: "/Home/GetStudentEntry",
+                type: "GET",
+                data: { idnum: idnum },
+                success: function (response) {
+                    if (response) {
+                        res = response
+                        a = asssessment[selectedAssessment]
+                        assessment_value = res[a]
+                        $("#DataModal2 form #total_amount").val(res[a].toFixed(2))
+                    } else {
+                        alert("not found");
+                    }
+                },
+                error: function (error) {
+                    $("#result").html("Error: " + error);
+                }
             });
+        })
+        $('#DataModal2 .modal-footer button:nth-child(2)').off('click').on('click', function () {
+            $.ajax({
+                url: "/Home/UpdateStudentEntry",
+                type: "POST",
+                data: {
+                    idnum: idnum,
+                    assessment_value: assessment_value,
+                    amount_tendered: $('#DataModal2 form #amount_tendered').val()
+                },
+                complete: function (response) {
+                    $("#student").trigger('reset');
+                    console.log("Complete:", response);
+                    retrieve()
+                }
+            });
+            
+        })
+        
     })
-    
+
     $('#DataModal .modal-footer button:nth-child(2)').off('click').on('click', function () {
         let user = $('#DataModal form').find("input[name='user']").map(function () { return $(this).val() }).get()
 
         $.ajax({
-            url: "/Home/StudentEntry",
+            url: "/Home/CreateStudentEntry",
             type: 'POST',
             data: {
                 idnum: user[0],
@@ -105,62 +175,17 @@ $(document).ready(function () {
                 tuition: studentModel.tuition[selectedCode],
                 labfee: studentModel.labfee[selectedCode],
                 misc: studentModel.misc[selectedCode],
-                status: "Pending",
-                amount_tendered: 0,
-            },
-            success: function (response) {
-                res = response
-
             },
             error: function (error) {
                 console.log(error)
             },
             complete: function () {
                 $("#student").trigger('reset');
-
-                setTimeout(function () {
-
-                    $('#CustomerTable > tbody > tr > td').remove()
-                    $('#CustomerTable > tbody').each(function (i, tr) {
-                        $(this).append($("<tr>"))
-                        $(this).append($('<td>').text(res[0].idnum));
-                        $(this).append($('<td>').text(parseFloat(res[0].total_tuition_units.toFixed(2))));
-                        $(this).append($('<td>').text(parseFloat(res[0].prelim.toFixed(2))));
-                        $(this).append($('<td>').text(parseFloat(res[0].midterm.toFixed(2))));
-                        $(this).append($('<td>').text(parseFloat(res[0].semifinal.toFixed(2))));
-                        $(this).append($('<td>').text(parseFloat(res[0].total_fee.toFixed(2))));
-                        $(this).append($('<td>').html(res[0].status));
-                        $(this).append($('<td>').text(res[0].mode_of_payment));
-                        $(this).append($('<td>').html(`<button type='button' class='btn btn-outline-success btn-sm btn-pay' data-bs-toggle="modal" data-bs-target="#DataModal2">Edit</button>`));
-                    });
-                }, 500)
-
+                retrieve()
             }
 
         })
-        $('#DataModal2 .modal-footer button:nth-child(2)').off('click').on('click', function () {
-            console.log($('#DataModal2 form #amount_tendered').val())
 
-            $.ajax({
-                url: '/Home/StudentEntry/1234', 
-                type: 'PUT',
-                data: {
-                    amount_tendered: $('#DataModal2 form #amount_tendered').val(),
-                    status: "Paid"
-                },
-                success: function (response) {
-                    res = response
-                    console.log(res)
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-            })
-        })
-        //$("table").on("click", ".btn-pay", function () {
-        //    console.log("wqeqwqw")
-        //});
-        //var num3 = 123456 / Math.pow(10, 3);  //sets num3 to 123.456
     })
 
 })
