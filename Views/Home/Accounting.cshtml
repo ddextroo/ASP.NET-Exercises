@@ -13,7 +13,6 @@
         </div>
         <div class="col-md-5 d-flex align-items-end flex-column">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DataModal" id="btnClick">Add student</button>
-            <button type="button" class="btn btn-primary" id="btnClick2">Get</button>
         </div>
     </div>
     <table id="CustomerTable" class="table table-borderless table-stipped table-hover" data-url="/Home/StudentEntry" data-side-pagination="client" data-toggle="table" data-pagination="true" data-show-toggle="true" data-show-columns="true">
@@ -25,8 +24,9 @@
                 <th scope="col">Midterm Fee</th>
                 <th scope="col">Semifinal Fee   </th>
                 <th scope="col">Total Fees</th>
-                <th scope="col">Status</th>
                 <th scope="col">Mode of Payment</th>
+                <th scope="col">Ammount Tendered</th>
+                <th scope="col">Change</th>
                 <th score="col">Action</th>
             </tr>
         </thead>
@@ -38,8 +38,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">Add new student</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" data-bs-dismiss="modal">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -122,7 +122,7 @@
                 <div class="modal-header">
                     <h3 class="modal-title">Student Payment</h3>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" data-bs-dismiss="modal">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -145,6 +145,11 @@
                                 </div>
                             </div>
                             <div class="row d-flex justify-content-center">
+                                <div class="col mb-3 float-center">
+                                    <h3 class="text-center" id="translate">WanBilyon Tawsan Pitot</h3>
+                                    </div>
+                                </div>
+                            <div class="row d-flex justify-content-center">
                                 <div class="col mb-3">
                                     <label for="amount_tendered" class="col-form-label">Amount Tendered</label>
                                     <input type="text" class="form-control" name="user" id="amount_tendered" required />
@@ -155,7 +160,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>
