@@ -188,8 +188,10 @@ $(document).ready(function () {
                         if (payment == 0.0) {
                             $("#DataModal2 form #change").val(0)
                             $("#DataModal2 form #amount_tendered").removeAttr('disabled')
+                            $("#DataModal2 .modal-footer button:nth-child(2)").removeAttr('disabled')
                         } else {
                             $("#DataModal2 form #amount_tendered").attr('disabled', 'disabled')
+                            $("#DataModal2 .modal-footer button:nth-child(2)").attr('disabled', 'disabled')
                             $("#DataModal2 form #change").val((payment - res[a]).toFixed(2))
                         }
                     } else {
