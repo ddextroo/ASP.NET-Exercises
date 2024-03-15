@@ -37,11 +37,19 @@ namespace MyExercises.Controllers
     var total_units = float.Parse(Request.Form["subject"]) * 3;
     var tuition_tuition = float.Parse(Request.Form["tuition"]) * total_units;
     var total_f = float.Parse(Request.Form["labfee"]) + float.Parse(Request.Form["registration"]) + float.Parse(Request.Form["tuition"]) + float.Parse(Request.Form["misc"]) + tuition_tuition;
-    var newEntry = new
+    foreach (var entry in studentEntries)
+    {
+        dynamic dynamicEntry = entry;
+        if (dynamicEntry.idnum == Request.Form["idnum"].ToString())
+        {
+            return Json("ID Already Exist");
+        }
+    }
+            var newEntry = new
     {
         idnum = Request.Form["idnum"].ToString(),
-        lname = Request.Form["lname"].ToString(),
         fname = Request.Form["fname"].ToString(),
+        lname = Request.Form["lname"].ToString(),
         gender = Request.Form["gender"].ToString(),
         course_code = Request.Form["course_code"].ToString(),
         course = Request.Form["course"].ToString(),
@@ -57,11 +65,15 @@ namespace MyExercises.Controllers
         midterm = total_f * 0.64,
         semifinal = total_f * 0.75,
         final = total_f,
+        prelim_payment = 0,
+        midterm_payment = 0,
+        semifinal_payment = 0,
+        final_payment = 0,
         mode_of_payment = (total_f >= 8000) ? "Cash" : (total_f >= 5000) ? "Check" : "Credit"
     };
 
     studentEntries.Add(newEntry);
-    return Json(studentEntries);
+    return Json("Added Successfully");
 }
 
 public ActionResult GetStudentEntry(string idnum)
@@ -100,8 +112,8 @@ public ActionResult UpdateStudentEntry(string idnum, float assessment, float amo
             var updatedEntry = new
             {
                 idnum = dynamicEntry.idnum,
-                lname = dynamicEntry.lname,
                 fname = dynamicEntry.fname,
+                lname = dynamicEntry.lname,
                 gender = dynamicEntry.gender,
                 course_code = dynamicEntry.course_code,
                 course = dynamicEntry.course,
@@ -117,8 +129,10 @@ public ActionResult UpdateStudentEntry(string idnum, float assessment, float amo
                 midterm = dynamicEntry.midterm,
                 semifinal = dynamicEntry.semifinal,
                 final = dynamicEntry.final,
-                change = amountTenderedConverted - float.Parse(Request.Form["assessment_value"]),
-                amount_tendered = amountTenderedConverted,
+                prelim_payment = (Request.Form["assessment_name"] == "prelim") ? amountTenderedConverted : dynamicEntry.prelim_payment,
+                midterm_payment = (Request.Form["assessment_name"] == "midterm") ? amountTenderedConverted : dynamicEntry.midterm_payment,
+                semifinal_payment = (Request.Form["assessment_name"] == "semifinal") ? amountTenderedConverted : dynamicEntry.semifinal_payment,
+                final_payment = (Request.Form["assessment_name"] == "final") ? amountTenderedConverted : dynamicEntry.final_payment,
                 mode_of_payment = dynamicEntry.mode_of_payment
             };
 
