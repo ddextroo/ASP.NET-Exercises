@@ -32,14 +32,12 @@ namespace MyExercises.Controllers
 
             return View();
         }
-        [HttpPost]
-public ActionResult StudentEntry()
+        public ActionResult CreateStudentEntry()
 {
-    var data = new List<object>();
     var total_units = float.Parse(Request.Form["subject"]) * 3;
     var tuition_tuition = float.Parse(Request.Form["tuition"]) * total_units;
     var total_f = float.Parse(Request.Form["labfee"]) + float.Parse(Request.Form["registration"]) + float.Parse(Request.Form["tuition"]) + float.Parse(Request.Form["misc"]) + tuition_tuition;
-    data.Add(new
+    var newEntry = new
     {
         idnum = Request.Form["idnum"].ToString(),
         lname = Request.Form["lname"].ToString(),
@@ -59,22 +57,82 @@ public ActionResult StudentEntry()
         midterm = total_f * 0.64,
         semifinal = total_f * 0.75,
         final = total_f,
-        check = float.Parse(Request.Form["amount_tendered"]) - 2,
-        status = Request.Form["status"],
         mode_of_payment = (total_f >= 8000) ? "Cash" : (total_f >= 5000) ? "Check" : "Credit"
-    });
-    return Json(data);
+    };
+
+    studentEntries.Add(newEntry);
+    return Json(studentEntries);
 }
-[HttpGet]
-public ActionResult StudentEntry(string idnum)
+
+public ActionResult GetStudentEntry(string idnum)
 {
-    var data = new List<object>();
-    data.Add(new
+    var entry = studentEntries.FirstOrDefault(s =>
     {
-        idnum = idnum,
+        var props = s.GetType().GetProperties();
+        var idnumProp = props.FirstOrDefault(p => p.Name == "idnum");
+        if (idnumProp != null)
+        {
+            var idnumValue = idnumProp.GetValue(s, null)?.ToString();
+            return idnumValue == idnum;
+        }
+        return false;
     });
-    return Json(data);
+
+    if (entry != null)
+        return Json(entry);
+    else
+        return NotFound();
 }
+public ActionResult GetAllStudentEntries()
+{
+    return Json(studentEntries);
+}
+
+public ActionResult UpdateStudentEntry(string idnum, float assessment, float amount_tendered)
+{
+    var updatedEntries = new List<object>();
+    foreach (var entry in studentEntries)
+    {
+        dynamic dynamicEntry = entry;
+        if (dynamicEntry.idnum == idnum)
+        {
+            var amountTenderedConverted = float.Parse(Request.Form["amount_tendered"]) / Math.Pow(10, 2);
+            var updatedEntry = new
+            {
+                idnum = dynamicEntry.idnum,
+                lname = dynamicEntry.lname,
+                fname = dynamicEntry.fname,
+                gender = dynamicEntry.gender,
+                course_code = dynamicEntry.course_code,
+                course = dynamicEntry.course,
+                year = dynamicEntry.year,
+                subject = dynamicEntry.subject,
+                registration = dynamicEntry.registration,
+                tuition = dynamicEntry.tuition,
+                labfee = dynamicEntry.labfee,
+                misc = dynamicEntry.misc,
+                total_tuition_units = dynamicEntry.total_tuition_units,
+                total_fee = dynamicEntry.total_fee,
+                prelim = dynamicEntry.prelim,
+                midterm = dynamicEntry.midterm,
+                semifinal = dynamicEntry.semifinal,
+                final = dynamicEntry.final,
+                change = amountTenderedConverted - float.Parse(Request.Form["assessment_value"]),
+                amount_tendered = amountTenderedConverted,
+                mode_of_payment = dynamicEntry.mode_of_payment
+            };
+
+            updatedEntries.Add(updatedEntry);
+        }
+        else
+        {
+            updatedEntries.Add(entry);
+        }
+    }
+    studentEntries = updatedEntries;
+    return Json("success");
+}
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
