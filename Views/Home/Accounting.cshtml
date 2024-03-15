@@ -23,10 +23,8 @@
                 <th scope="col">Prelim Fee</th>
                 <th scope="col">Midterm Fee</th>
                 <th scope="col">Semifinal Fee   </th>
-                <th scope="col">Total Fees</th>
+                <th scope="col">Final Fee</th>
                 <th scope="col">Mode of Payment</th>
-                <th scope="col">Ammount Tendered</th>
-                <th scope="col">Change</th>
                 <th score="col">Action</th>
             </tr>
         </thead>
@@ -51,11 +49,11 @@
                                     <input type="number" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
-                                    <label for="vcr" class="col-form-label">Last Name</label>
+                                    <label for="remote controller" class="col-form-label">First Name</label>
                                     <input type="text" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
-                                    <label for="remote controller" class="col-form-label">First Name</label>
+                                    <label for="vcr" class="col-form-label">Last Name</label>
                                     <input type="text" class="form-control" name="user" required />
                                 </div>
                                 <div class="col-md-5 mb-3">
@@ -136,7 +134,7 @@
                                         <option value="0">Prelim</option>
                                         <option value="1">Midterm</option>
                                         <option value="2">Semifinal</option>
-                                        <option value="2">Final</option>
+                                        <option value="3">Final</option>
                                     </select>
                                 </div>
                                 <div class="col-md-5 mb-3">
@@ -146,13 +144,17 @@
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="col mb-3 float-center">
-                                    <h3 class="text-center" id="translate">WanBilyon Tawsan Pitot</h3>
+                                    <h4 class="text-center" id="translate"></h4>
                                     </div>
                                 </div>
                             <div class="row d-flex justify-content-center">
-                                <div class="col mb-3">
+                                <div class="col-md-5">
                                     <label for="amount_tendered" class="col-form-label">Amount Tendered</label>
                                     <input type="text" class="form-control" name="user" id="amount_tendered" required />
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="change" class="col-form-label">Change</label>
+                                    <input type="text" class="form-control" name="user" id="change" disabled required />
                                 </div>
                             </div>
                         </form>
