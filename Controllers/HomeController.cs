@@ -7,6 +7,7 @@ namespace MyExercises.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        public static List<object> studentEntries = new List<object>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -45,7 +46,7 @@ namespace MyExercises.Controllers
             return Json("ID Already Exist");
         }
     }
-            var newEntry = new
+    var newEntry = new
     {
         idnum = Request.Form["idnum"].ToString(),
         fname = Request.Form["fname"].ToString(),
