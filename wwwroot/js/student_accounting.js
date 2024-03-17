@@ -93,7 +93,7 @@ $(document).ready(function () {
                             word = "Zero";
                         }
 
-                        let onesWord = "", teensWord = "", tensWord = "", hundreds = "", thousandsWord = "", millionsWord = "";
+                        let onesWord = "", teensWord = "", tensWord = "", hundreds = "", thousandsWord = "", tensthousandsWord = "";
 
                         switch (Math.floor(n % 10)) {
                             case 0: onesWord = ""; break;
@@ -160,20 +160,46 @@ $(document).ready(function () {
                             case 9: thousandsWord = "Nine Thousand "; break;
                         }
 
-                        switch (Math.floor((n % 10000000) / 1000000)) {
-                            case 0: break;
-                            case 1: millionsWord = "One Million "; break;
-                            case 2: millionsWord = "Two Million "; break;
-                            case 3: millionsWord = "Three Million "; break;
-                            case 4: millionsWord = "Four Million "; break;
-                            case 5: millionsWord = "Five Million "; break;
-                            case 6: millionsWord = "Six Million "; break;
-                            case 7: millionsWord = "Seven Million "; break;
-                            case 8: millionsWord = "Eight Million "; break;
-                            case 9: millionsWord = "Nine Million "; break;
+                        switch (Math.floor((n % 100000) / 10000)) {
+                            case 0: tensthousandsWord = ""; break;
+                            case 1:
+                                switch (Math.floor(n / 1000)) {
+                                    case 10: tensthousandsWord = "Ten Thousand "; break;
+                                    case 11: tensthousandsWord = "Eleven Thousand "; break;
+                                    case 12: tensthousandsWord = "Twelve Thousand "; break;
+                                    case 13: tensthousandsWord = "Thirteen Thousand "; break;
+                                    case 14: tensthousandsWord = "Fourteen Thousand "; break;
+                                    case 15: tensthousandsWord = "Fifteen Thousand "; break;
+                                    case 16: tensthousandsWord = "Sixteen Thousand "; break;
+                                    case 17: tensthousandsWord = "Seventeen Thousand "; break;
+                                    case 18: tensthousandsWord = "Eighteen Thousand "; break;
+                                    case 19: tensthousandsWord = "Nineteen Thousand "; break;
+                                }
+                                break;
+                            case 2: tensthousandsWord = "Twenty "; break;
+                            case 3: tensthousandsWord = "Thirty "; break;
+                            case 4: tensthousandsWord = "Forty "; break;
+                            case 5: tensthousandsWord = "Fifty "; break;
+                            case 6: tensthousandsWord = "Sixty "; break;
+                            case 7: tensthousandsWord = "Seventy "; break;
+                            case 8: tensthousandsWord = "Eighty "; break;
+                            case 9: tensthousandsWord = "Ninety "; break;
+                        }
+                        let fourthDigit;
+                        switch (Math.floor((Math.floor(n) / 1000) % 10)) {
+                            case 0: fourthDigit = ""; break;
+                            case 1: fourthDigit = "One"; break;
+                            case 2: fourthDigit = "Two"; break;
+                            case 3: fourthDigit = "Three"; break;
+                            case 4: fourthDigit = "Four"; break;
+                            case 5: fourthDigit = "Five"; break;
+                            case 6: fourthDigit = "Six"; break;
+                            case 7: fourthDigit = "Seven"; break;
+                            case 8: fourthDigit = "Eight"; break;
+                            case 9: fourthDigit = "Nine"; break;
                         }
 
-                        word = millionsWord + thousandsWord + hundreds + tensWord + " " + (teensWord !== "" ? teensWord : onesWord);
+                        word = (tensthousandsWord !== "" ? (n > 20999 ? tensthousandsWord + " " + fourthDigit + " Thousand " : tensthousandsWord) : thousandsWord) + hundreds + tensWord + " " + (teensWord !== "" ? teensWord : onesWord);
 
                         const decimalPart = n % 1;
                         if (decimalPart > 0) {
