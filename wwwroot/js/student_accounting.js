@@ -58,8 +58,10 @@ $(document).ready(function () {
             }
         });
     }
+    
     $("#DataModal2").on('shown.bs.modal', function (e) {
         const idnum = $(e.relatedTarget).data("idNum")
+        $("#DataModal2 .modal-title").text(`Student Payment - ${idnum}`)
         var asssessment = [
             "prelim",
             "midterm",
