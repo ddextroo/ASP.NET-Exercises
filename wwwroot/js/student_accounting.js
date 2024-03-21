@@ -2,7 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-﻿
+
 $(document).ready(function () {
     var studentModel = {
         course: ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8"],
@@ -250,9 +250,9 @@ $(document).ready(function () {
                 alert("Insufficient Balance")
                 $("#pay").trigger("reset")
             }
-            
+
         })
-        
+
     })
 
     $('#DataModal .modal-footer button:nth-child(2)').off('click').on('click', function () {
