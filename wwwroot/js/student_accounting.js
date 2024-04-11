@@ -95,7 +95,7 @@ $(document).ready(function () {
 
             $("#DataModal2 form #total_amount").val(res[a].toFixed(2));
             $("#DataModal2 form #amount_tendered").val(
-              payment.toFixed(2) * 100
+              (payment.toFixed(2) * 100) / 100
             );
             if (payment == 0.0) {
               $("#DataModal2 form #change").val(0);
@@ -144,7 +144,7 @@ $(document).ready(function () {
               $("#pay").trigger("reset");
               alert("Transaction Success");
               retrieve();
-              location.reload(true);
+              location.reload();
             },
           });
         } else {
@@ -181,7 +181,7 @@ $(document).ready(function () {
           misc: studentModel.misc[selectedCode],
         },
         error: function (error) {
-          console.log(error);
+          alert(error.responseText);
         },
         success: function (response) {
           $("#student").trigger("reset");
